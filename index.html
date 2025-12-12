@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Juicy Premium Drinks</title>
+
+<style>
+*{ margin:0; padding:0; box-sizing:border-box; }
+
+body{
+  font-family: Inter, sans-serif;
+  background:#0b0b0b;
+  color:white;
+  overflow-x:hidden;
+  transition:1s ease;
+}
+
+/* Dynamic Animated Background */
+#dynamic-bg{
+  position:fixed;
+  inset:0;
+  z-index:-5;
+  background:linear-gradient(120deg,#ff0044,#0aff68,#0099ff);
+  background-size:400% 400%;
+  animation:bgMove 10s ease infinite;
+  filter:blur(120px);
+  opacity:0.45;
+  transition:1s ease;
+}
+
+@keyframes bgMove{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+.stage{
+  width:100vw;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  position:relative;
+}
+
+.big-text{
+  position:absolute;
+  font-size:200px;
+  font-weight:900;
+  opacity:0.12;
+  letter-spacing:8px;
+  text-transform:uppercase;
+  color:white;
+  user-select:none;
+  z-index:-1;
+  transform:translateY(-80px);
+  transition:0.8s ease;
+}
+
+/* Bottle – smoother + slow + rotation */
+.bottle{
+  width:460px;
+  opacity:0;
+  transform:
+    translateY(-500px)
+    scale(1.05)
+    rotate(-25deg);
+  transition:
+    opacity 2.2s ease,
+    transform 2.3s cubic-bezier(.15,0.85,.25,1);
+  filter:drop-shadow(0px 30px 60px rgba(255,255,255,0.25));
+}
+
+.show{
+  transform:
+    translateY(0px)
+    scale(1.0)
+    rotate(0deg);
+  opacity:1 !important;
+}
+
+.glow{
+  position:absolute;
+  bottom:120px;
+  width:260px;
+  height:40px;
+  background:rgba(255,255,255,0.55);
+  filter:blur(30px);
+  border-radius:50%;
+  opacity:0;
+  transition:1.6s ease;
+}
+
+.info-box{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  width:320px;
+  font-size:22px;
+  line-height:34px;
+  font-weight:600;
+  opacity:0;
+  transition:1.4s ease;
+}
+
+.left-info{ left:50px; }
+.right-info{ right:50px; }
+
+.show-info{ opacity:1; }
+</style>
+</head>
+
+<body>
+
+<div id="dynamic-bg"></div>
+
+<section class="stage" id="showcase">
+  <div class="big-text" id="bigText"></div>
+  <img id="bottle" class="bottle" src="">
+  <div class="glow" id="glow"></div>
+  <div class="info-box left-info" id="infoLeft"></div>
+  <div class="info-box right-info" id="infoRight"></div>
+</section>
+
+<script>
+/* All drink scenes with color */
+const scenes=[
+  {
+    name:"Strawberry Banana",
+    img:"b1.png",
+    color:"#ff4b78",
+    left:"🍓 RECIPE:<br>• 1 cup strawberries<br>• 1 banana<br>• Honey 1 tbsp<br>• Yogurt 1/2 cup",
+    right:"Smooth & Fresh<br>Creamy Breakfast Drink<br>Energy Booster"
+  },
+  {
+    name:"Green Detox",
+    img:"b2.png",
+    color:"#4aff3b",
+    left:"🥒 RECIPE:<br>• Kale & Spinach<br>• Green Apple<br>• Cucumber<br>• Lemon & Ginger",
+    right:"Body Cleanser<br>Rich Minerals<br>Perfect Detox"
+  },
+  {
+    name:"Watermelon Protein",
+    img:"b3.png",
+    color:"#ff6b70",
+    left:"🍉 RECIPE:<br>• Fresh watermelon<br>• 1 scoop protein<br>• Lime juice 1 tsp",
+    right:"High Protein<br>Refreshing & Clean<br>Perfect Post-Workout"
+  },
+  {
+    name:"Pink Citrus Cooler",
+    img:"b4.png",
+    color:"#ff4fa8",
+    left:"🍊 RECIPE:<br>• Pink citrus blend<br>• Lemon slice<br>• Light soda<br>• Ice cubes",
+    right:"Refreshing Twist<br>Light & Sparkling<br>Perfect Summer Cooler"
+  },
+  {
+    name:"Beet Vitality Juice",
+    img:"b5.png",
+    color:"#a8003a",
+    left:"🫐 RECIPE:<br>• Fresh beetroot<br>• Apple<br>• Ginger hint<br>• Mineral-rich blend",
+    right:"Energy Booster<br>Natural Detox<br>Vitamin Packed"
+  },
+  {
+    name:"Berry Ice Refresher",
+    img:"b6.png",
+    color:"#7e0aff",
+    left:"🍒 RECIPE:<br>• Mixed berries<br>• Crushed ice<br>• Berry syrup<br>• Lime squeeze",
+    right:"Chilled Delight<br>Sweet & Tangy<br>Berry Explosion"
+  },
+  {
+    name:"Lavender Lemon Spark",
+    img:"b7.png",
+    color:"#b06bff",
+    left:"💜 RECIPE:<br>• Lavender extract<br>• Fresh lemon<br>• Sparkling water<br>• Ice",
+    right:"Calming Aroma<br>Zesty Freshness<br>Relax & Refresh"
+  }
+];
+
+let index=0;
+
+function loadScene(){
+  const s=scenes[index];
+
+  document.getElementById("bigText").textContent=s.name;
+  document.getElementById("bottle").src=s.img;
+  document.getElementById("infoLeft").innerHTML=s.left;
+  document.getElementById("infoRight").innerHTML=s.right;
+
+  /* Animated background changes to drink color */
+  document.getElementById("dynamic-bg").style.background =
+    `linear-gradient(120deg, ${s.color}, #000000, ${s.color})`;
+
+  const bottle=document.getElementById("bottle");
+  const left=document.getElementById("infoLeft");
+  const right=document.getElementById("infoRight");
+  const glow=document.getElementById("glow");
+
+  /* Reset animation */
+  bottle.classList.remove("show");
+  left.classList.remove("show-info");
+  right.classList.remove("show-info");
+  glow.style.opacity=0;
+
+  /* Smooth entry */
+  setTimeout(()=>{
+    bottle.classList.add("show");
+    left.classList.add("show-info");
+    right.classList.add("show-info");
+    glow.style.opacity=1;
+  },250);
+
+  index=(index+1)%scenes.length;
+}
+
+loadScene();
+setInterval(loadScene,4500);
+</script>
+
+</body>
+</html>
